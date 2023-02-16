@@ -1,0 +1,7 @@
+<view class="authorization">
+  <image src="/images/offection.jpg" mode="aspectFit"></image>
+  <view class="text">授权之后才能继续使用哦!!!</view>
+  <van-button type="primary" custom-style="margin-top:20px" block open-type="getUserInfo" bind:getuserinfo="login">授权登录</van-button>
+  <van-button custom-style="margin-top:15px" plain type="primary" block bind:click="cancle">取消</van-button>
+</view>
+<van-toast id="van-toast" />

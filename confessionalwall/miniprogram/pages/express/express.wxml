@@ -1,0 +1,938 @@
+<wxs src="../../utils/time.wxs" module="timeQuantum"></wxs>
+<van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:close="onCloseSheet"
+	bind:cancel="onCancelSheet" bind:select="selectSheet" />
+<van-tabs bind:change="onClick" sticky='true' swipe-threshold='3.5' swipeable lazy-render="false">
+	<van-tab title="全部" name="a">
+		<view class="container">
+			<view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex"
+				wx:for-item="profession">
+				<!-- 收藏 -->
+				<van-icon name="star-o" bind:click="shart" data-index="{{pindex}}" class="start-icon nostart-icon"
+					wx:if="{{!profession.isStart}}" />
+				<!-- 已收藏 -->
+				<van-icon name="star" color="yellow" bind:click="yesStart" class="start-icon"
+					data-index="{{pindex}}" wx:if="{{profession.isStart}}" />
+				<view class="user-group" wx:if="{{!profession.private}}">
+					<image src="{{profession.author.avatarUrl}}"></image>
+					<view class="right">
+						<view class="username">{{profession.author.nickName}}</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="user-group" wx:else>
+					<image src="/images/timg.jpg"></image>
+					<view class="right">
+						<view class="username">匿名用户</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="content-group">
+					<view class='for-user' wx:if="{{profession.favoritePerson !=''}}">
+						<view style='color:#007acc;'>表白@{{profession.favoritePerson}}</view>
+					</view>
+					<view class="content">{{profession.content}}</view>
+					<block wx:if="{{profession.images.length>0}}">
+						<view wx:if="{{profession.images.length === 1}}" class="image-group">
+							<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{profession.images}}" data-index="0"
+								data-professionInfor="{{pindex}}" />
+						</view>
+						<view wx:if="{{profession.images.length === 2}}" class="image-group">
+							<van-image bindtap="seeImage" wx:for="{{profession.images}}" wx:key="key"
+								wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{image}}" data-index="{{index}}"
+								data-professionInfor="{{pindex}}" />
+						</view>
+					</block>
+				</view>
+				<view class="love-footor">
+					<!-- 评论 -->
+					<view class="comment-group">
+						<van-icon name="chat-o" size="20px" bind:click="comment"
+							data-professionInfor="{{pindex}}" />
+						<block wx:if="{{profession.comments.length > 0}}">
+							{{profession.commentsNum}}
+						</block>
+					</view>
+					<!-- 点赞 -->
+					<view class="praise-group" bindtap="onPraise" data-professionInfor="{{pindex}}">
+						<image wx:if="{{profession.isPraise}}" src="../../images/color-love.png" />
+						<image wx:else src="../../images/topic_praise.png" />
+						<block wx:if="{{profession.praises.length > 0}}">
+							{{profession.praises.length}}
+						</block>
+						<block wx:else>
+							赞
+						</block>
+					</view>
+					<!-- 分享 -->
+					<view class="share-group" bindtap="shareBtn" data-item="{{profession}}">
+						<image src="../../images/share.png"></image>
+						<block wx:if="{{profession.transmit.length > 0}}">
+							{{profession.transmit.length}}
+						</block>
+					</view>
+
+				</view>
+
+				<view class="comment-box"
+					wx:if="{{profession.praises.length >0 || profession.comments.length > 0 || profession.transmit.length}}">
+					<view class="sanjiao"></view>
+					<view class="comment-detail">
+						<view class="share-list" wx:if="{{profession.transmit.length > 0}}">
+							<van-icon name="share" size="17px"></van-icon>
+							<view class="share-item">{{profession.transmit.length}}条转发</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.transmit.length > 0 &&(profession.praises.length >0 || profession.comments.length > 0)}}">
+						</view>
+						<!-- 显示点赞信息 -->
+						<view class="praise-container" wx:if="{{profession.praises.length > 0}}">
+							<view class='praise-content'>
+								<image class='praise-user praise-item' src='/images/ilove.png'></image>
+								<view class='praise-item' wx:for="{{profession.praises}}" wx:key="key">
+									<view class='praise-item-sub'>
+										<!-- 点赞头像 -->
+										<view>
+											<image class='praise-user-avatar' src='{{item.avatarUrl}}'>
+											</image>
+										</view>
+										<!-- 点赞名称 -->
+										<view class='praise-user-name'>
+											{{item.nickName}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.comments.length > 0 && profession.praises.length > 0}}">
+						</view>
+						<!-- 评论信息 -->
+						<view class="comment-wall" wx:for="{{profession.comments}}" wx:key="key"
+							wx:for-item="comments">
+							<view class="comment-content">
+								<!-- <block wx:if="{{comments.comment.childComment.length == 0}}"> -->
+								<view class="childComment-wall" catchtap="delComment" data-item="{{profession}}"
+									data-isChild="{{false}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{profession}}"
+										data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{profession.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-index="{{index}}" data-isChild="{{true}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-isChild="{{true}}" data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 发布按钮 -->
+		<view class="btn" bindtap="publish">
+			<text>+</text>
+		</view>
+	</van-tab>
+
+	<van-tab title="表白" name="b">
+		<view class="container">
+			<view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex"
+				wx:for-item="profession">
+				<!-- 收藏 -->
+				<van-icon name="star-o" bind:click="shart" data-index="{{pindex}}" class="start-icon nostart-icon"
+					wx:if="{{!profession.isStart}}" />
+				<!-- 已收藏 -->
+				<van-icon name="star" color="yellow" bind:click="yesStart" class="start-icon"
+					data-index="{{pindex}}" wx:if="{{profession.isStart}}" />
+				<view class="user-group" wx:if="{{!profession.private}}">
+					<image src="{{profession.author.avatarUrl}}"></image>
+					<view class="right">
+						<view class="username">{{profession.author.nickName}}</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="user-group" wx:else>
+					<image src="/images/timg.jpg"></image>
+					<view class="right">
+						<view class="username">匿名用户</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="content-group">
+					<view class='for-user' wx:if="{{profession.favoritePerson !=''}}">
+						<view style='color:#007acc;'>表白@{{profession.favoritePerson}}</view>
+					</view>
+					<view class="content">{{profession.content}}</view>
+					<block wx:if="{{profession.images.length>0}}">
+						<view wx:if="{{profession.images.length === 1}}" class="image-group">
+							<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{profession.images}}" data-index="0"
+								data-professionInfor="{{pindex}}" />
+						</view>
+						<view wx:if="{{profession.images.length === 2}}" class="image-group">
+							<van-image bindtap="seeImage" wx:for="{{profession.images}}" wx:key="key"
+								wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{image}}" data-index="{{index}}"
+								data-professionInfor="{{pindex}}" />
+						</view>
+					</block>
+				</view>
+				<view class="love-footor">
+					<!-- 评论 -->
+					<view class="comment-group">
+						<van-icon name="chat-o" size="20px" bind:click="comment"
+							data-professionInfor="{{pindex}}" />
+						<block wx:if="{{profession.comments.length > 0}}">
+							{{profession.commentsNum}}
+						</block>
+					</view>
+					<!-- 点赞 -->
+					<view class="praise-group" bindtap="onPraise" data-professionInfor="{{pindex}}">
+						<image wx:if="{{profession.isPraise}}" src="../../images/color-love.png" />
+						<image wx:else src="../../images/topic_praise.png" />
+						<block wx:if="{{profession.praises.length > 0}}">
+							{{profession.praises.length}}
+						</block>
+						<block wx:else>
+							赞
+						</block>
+					</view>
+					<!-- 分享 -->
+					<view class="share-group" bindtap="shareBtn" data-item="{{profession}}">
+						<image src="../../images/share.png"></image>
+						<block wx:if="{{profession.transmit.length > 0}}">
+							{{profession.transmit.length}}
+						</block>
+					</view>
+
+				</view>
+
+				<view class="comment-box"
+					wx:if="{{profession.praises.length >0 || profession.comments.length > 0 || profession.transmit.length}}">
+					<view class="sanjiao"></view>
+					<view class="comment-detail">
+						<view class="share-list" wx:if="{{profession.transmit.length > 0}}">
+							<van-icon name="share" size="17px"></van-icon>
+							<view class="share-item">{{profession.transmit.length}}条转发</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.transmit.length > 0 &&(profession.praises.length >0 || profession.comments.length > 0)}}">
+						</view>
+						<!-- 显示点赞信息 -->
+						<view class="praise-container" wx:if="{{profession.praises.length > 0}}">
+							<view class='praise-content'>
+								<image class='praise-user praise-item' src='/images/ilove.png'></image>
+								<view class='praise-item' wx:for="{{profession.praises}}" wx:key="key">
+									<view class='praise-item-sub'>
+										<!-- 点赞头像 -->
+										<view>
+											<image class='praise-user-avatar' src='{{item.avatarUrl}}'>
+											</image>
+										</view>
+										<!-- 点赞名称 -->
+										<view class='praise-user-name'>
+											{{item.nickName}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.comments.length > 0 && profession.praises.length > 0}}">
+						</view>
+						<!-- 评论信息 -->
+						<view class="comment-wall" wx:for="{{profession.comments}}" wx:key="key"
+							wx:for-item="comments">
+							<view class="comment-content">
+								<!-- <block wx:if="{{comments.comment.childComment.length == 0}}"> -->
+								<view class="childComment-wall" catchtap="delComment" data-item="{{profession}}"
+									data-isChild="{{false}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{profession}}"
+										data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{profession.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-index="{{index}}" data-isChild="{{true}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-isChild="{{true}}" data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 发布按钮 -->
+		<view class="btn" bindtap="publish">
+			<text>+</text>
+		</view>
+	</van-tab>
+
+	<van-tab title="最热" name="c">
+		<view class="topHot">
+			<view class="nowSort">当前排序:</view>
+			<van-dropdown-menu>
+				<van-dropdown-item value="{{ value2 }}" options="{{ option2 }}" title-class="当前排序"
+					bind:change="sortChange" />
+			</van-dropdown-menu>
+		</view>
+
+		<view class="container">
+			<view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex"
+				wx:for-item="professions">
+				<!-- 收藏 -->
+				<van-icon name="star-o" bind:click="shart" data-index="{{pindex}}" class="start-icon nostart-icon"
+					wx:if="{{!professions.isStart}}" />
+				<!-- 已收藏 -->
+				<van-icon name="star" color="yellow" bind:click="yesStart" class="start-icon"
+					data-index="{{pindex}}" wx:else />
+				<view class="user-group" wx:if="{{!professions.private}}">
+					<image src="{{professions.author.avatarUrl}}"></image>
+					<view class="right">
+						<view class="username">{{professions.author.nickName}}</view>
+						<view class="time">{{timeQuantum.DateFormat(professions.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="user-group" wx:else>
+					<image src="/images/timg.jpg"></image>
+					<view class="right">
+						<view class="username">匿名用户</view>
+						<view class="time">{{timeQuantum.DateFormat(professions.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="content-group">
+					<view class='for-user' wx:if="{{professions.favoritePerson !=''}}">
+						<view style='color:#007acc;'>表白@{{professions.favoritePerson}}</view>
+					</view>
+					<view class="content">{{professions.content}}</view>
+					<block wx:if="{{professions.images.length>0}}">
+						<view wx:if="{{professions.images.length === 1}}" class="image-group">
+							<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{professions.images}}" data-index="0"
+								data-professionInfor="{{pindex}}" />
+						</view>
+						<view wx:if="{{professions.images.length === 2}}" class="image-group">
+							<van-image bindtap="seeImage" wx:for="{{professions.images}}" wx:key="key"
+								wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{image}}" data-index="{{index}}"
+								data-professionInfor="{{pindex}}" />
+						</view>
+					</block>
+				</view>
+				<view class="love-footor">
+					<!-- 评论 -->
+					<view class="comment-group">
+						<van-icon name="chat-o" size="20px" bind:click="comment"
+							data-professionInfor="{{pindex}}" />
+						<block wx:if="{{professions.comments.length > 0}}">
+							{{professions.commentsNum}}
+						</block>
+					</view>
+					<!-- 点赞 -->
+					<view class="praise-group" bindtap="onPraise" data-professionInfor="{{pindex}}">
+						<image wx:if="{{professions.isPraise}}" src="../../images/color-love.png" />
+						<image wx:else src="../../images/topic_praise.png" />
+						<block wx:if="{{professions.praises && professions.praises.length > 0}}">
+							{{professions.praises.length}}
+						</block>
+						<block wx:else>
+							赞
+						</block>
+					</view>
+					<!-- 分享 -->
+					<view class="share-group" bindtap="shareBtn" data-item="{{professions}}">
+						<image src="../../images/share.png"></image>
+						<block wx:if="{{professions.transmit.length > 0}}">
+							{{professions.transmit.length}}
+						</block>
+					</view>
+				</view>
+
+				<view class="comment-box"
+					wx:if="{{professions.comments.length > 0 || professions.praises.length > 0|| professions.transmit.length > 0}}">
+					<view class="sanjiao"></view>
+					<view class="comment-detail">
+						<view class="share-list" wx:if="{{professions.transmit.length > 0}}">
+							<van-icon name="share" size="17px"></van-icon>
+							<view class="share-item">{{professions.transmit.length}}条转发</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{professions.transmit.length > 0 &&(professions.praises.length >0 || professions.comments.length > 0)}}">
+						</view>
+						<!-- 显示点赞信息 -->
+						<view class="praise-container" wx:if="{{professions.praises.length > 0}}">
+							<view class='praise-content'>
+								<image class='praise-user praise-item' src='/images/ilove.png'></image>
+								<view class='praise-item' wx:for="{{professions.praises}}" wx:key="key">
+									<view class='praise-item-sub'>
+										<!-- 点赞头像 -->
+										<view>
+											<image class='praise-user-avatar' src='{{item.avatarUrl}}'>
+											</image>
+										</view>
+										<!-- 点赞名称 -->
+										<view class='praise-user-name'>
+											{{item.nickName}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{professions.comments.length > 0 && professions.praises.length > 0}}">
+						</view>
+						<!-- 评论信息 -->
+						<view class="comment-wall" wx:for="{{professions.comments}}" wx:key="key"
+							wx:for-item="comments">
+							<view class="comment-content">
+								<!-- <block wx:if="{{comments.comment.childComment.length == 0}}"> -->
+								<view class="childComment-wall" catchtap="delComment"
+									data-item="{{professions}}" data-isChild="{{false}}"
+									data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment"
+										data-item="{{professions}}" data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{professions.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{professions.commentsNum}}"
+										data-id="{{professions._id}}" data-isChild="{{true}}"
+										data-index="{{index}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{professions.commentsNum}}"
+										data-id="{{professions._id}}" data-isChild="{{true}}"
+										data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 发布按钮 -->
+		<view class="btn" bindtap="publish">
+			<text>+</text>
+		</view>
+	</van-tab>
+
+	<van-tab title="找读友" name="d">
+		<view class="container">
+			<view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex"
+				wx:for-item="profession">
+				<!-- 收藏 -->
+				<van-icon name="star-o" bind:click="shart" data-index="{{pindex}}" class="start-icon nostart-icon"
+					wx:if="{{!profession.isStart}}" />
+				<!-- 已收藏 -->
+				<van-icon name="star" color="yellow" bind:click="yesStart" class="start-icon"
+					data-index="{{pindex}}" wx:if="{{profession.isStart}}" />
+				<view class="user-group" wx:if="{{!profession.private}}">
+					<image src="{{profession.author.avatarUrl}}"></image>
+					<view class="right">
+						<view class="username">{{profession.author.nickName}}</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="user-group" wx:else>
+					<image src="/images/timg.jpg"></image>
+					<view class="right">
+						<view class="username">匿名用户</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="content-group">
+					<view class='for-user' wx:if="{{profession.favoritePerson !=''}}">
+						<view style='color:#007acc;'>表白@{{profession.favoritePerson}}</view>
+					</view>
+					<view class="content">{{profession.content}}</view>
+					<block wx:if="{{profession.images.length>0}}">
+						<view wx:if="{{profession.images.length === 1}}" class="image-group">
+							<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{profession.images}}" data-index="0"
+								data-professionInfor="{{pindex}}" />
+						</view>
+						<view wx:if="{{profession.images.length === 2}}" class="image-group">
+							<van-image bindtap="seeImage" wx:for="{{profession.images}}" wx:key="key"
+								wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{image}}" data-index="{{index}}"
+								data-professionInfor="{{pindex}}" />
+						</view>
+					</block>
+				</view>
+				<view class="love-footor">
+					<!-- 评论 -->
+					<view class="comment-group">
+						<van-icon name="chat-o" size="20px" bind:click="comment"
+							data-professionInfor="{{pindex}}" />
+						<block wx:if="{{profession.comments.length > 0}}">
+							{{profession.commentsNum}}
+						</block>
+					</view>
+					<!-- 点赞 -->
+					<view class="praise-group" bindtap="onPraise" data-professionInfor="{{pindex}}">
+						<image wx:if="{{profession.isPraise}}" src="../../images/color-love.png" />
+						<image wx:else src="../../images/topic_praise.png" />
+						<block wx:if="{{profession.praises.length > 0}}">
+							{{profession.praises.length}}
+						</block>
+						<block wx:else>
+							赞
+						</block>
+					</view>
+					<!-- 分享 -->
+					<view class="share-group" bindtap="shareBtn" data-item="{{profession}}">
+						<image src="../../images/share.png"></image>
+						<block wx:if="{{profession.transmit.length > 0}}">
+							{{profession.transmit.length}}
+						</block>
+					</view>
+
+				</view>
+
+				<view class="comment-box"
+					wx:if="{{profession.praises.length >0 || profession.comments.length > 0 || profession.transmit.length}}">
+					<view class="sanjiao"></view>
+					<view class="comment-detail">
+						<view class="share-list" wx:if="{{profession.transmit.length > 0}}">
+							<van-icon name="share" size="17px"></van-icon>
+							<view class="share-item">{{profession.transmit.length}}条转发</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.transmit.length > 0 &&(profession.praises.length >0 || profession.comments.length > 0)}}">
+						</view>
+						<!-- 显示点赞信息 -->
+						<view class="praise-container" wx:if="{{profession.praises.length > 0}}">
+							<view class='praise-content'>
+								<image class='praise-user praise-item' src='/images/ilove.png'></image>
+								<view class='praise-item' wx:for="{{profession.praises}}" wx:key="key">
+									<view class='praise-item-sub'>
+										<!-- 点赞头像 -->
+										<view>
+											<image class='praise-user-avatar' src='{{item.avatarUrl}}'>
+											</image>
+										</view>
+										<!-- 点赞名称 -->
+										<view class='praise-user-name'>
+											{{item.nickName}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.comments.length > 0 && profession.praises.length > 0}}">
+						</view>
+						<!-- 评论信息 -->
+						<view class="comment-wall" wx:for="{{profession.comments}}" wx:key="key"
+							wx:for-item="comments">
+							<view class="comment-content">
+								<!-- <block wx:if="{{comments.comment.childComment.length == 0}}"> -->
+								<view class="childComment-wall" catchtap="delComment" data-item="{{profession}}"
+									data-isChild="{{false}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{profession}}"
+										data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{profession.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-index="{{index}}" data-isChild="{{true}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-isChild="{{true}}" data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 发布按钮 -->
+		<view class="btn" bindtap="publish">
+			<text>+</text>
+		</view>
+	</van-tab>
+
+	<van-tab title="找情侣" name="e">
+		<view class="container">
+			<view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex"
+				wx:for-item="profession">
+				<!-- 收藏 -->
+				<van-icon name="star-o" bind:click="shart" data-index="{{pindex}}" class="start-icon nostart-icon"
+					wx:if="{{!profession.isStart}}" />
+				<!-- 已收藏 -->
+				<van-icon name="star" color="yellow" bind:click="yesStart" class="start-icon"
+					data-index="{{pindex}}" wx:if="{{profession.isStart}}" />
+				<view class="user-group" wx:if="{{!profession.private}}">
+					<image src="{{profession.author.avatarUrl}}"></image>
+					<view class="right">
+						<view class="username">{{profession.author.nickName}}</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="user-group" wx:else>
+					<image src="/images/timg.jpg"></image>
+					<view class="right">
+						<view class="username">匿名用户</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="content-group">
+					<view class='for-user' wx:if="{{profession.favoritePerson !=''}}">
+						<view style='color:#007acc;'>表白@{{profession.favoritePerson}}</view>
+					</view>
+					<view class="content">{{profession.content}}</view>
+					<block wx:if="{{profession.images.length>0}}">
+						<view wx:if="{{profession.images.length === 1}}" class="image-group">
+							<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{profession.images}}" data-index="0"
+								data-professionInfor="{{pindex}}" />
+						</view>
+						<view wx:if="{{profession.images.length === 2}}" class="image-group">
+							<van-image bindtap="seeImage" wx:for="{{profession.images}}" wx:key="key"
+								wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{image}}" data-index="{{index}}"
+								data-professionInfor="{{pindex}}" />
+						</view>
+					</block>
+				</view>
+				<view class="love-footor">
+					<!-- 评论 -->
+					<view class="comment-group">
+						<van-icon name="chat-o" size="20px" bind:click="comment"
+							data-professionInfor="{{pindex}}" />
+						<block wx:if="{{profession.comments.length > 0}}">
+							{{profession.commentsNum}}
+						</block>
+					</view>
+					<!-- 点赞 -->
+					<view class="praise-group" bindtap="onPraise" data-professionInfor="{{pindex}}">
+						<image wx:if="{{profession.isPraise}}" src="../../images/color-love.png" />
+						<image wx:else src="../../images/topic_praise.png" />
+						<block wx:if="{{profession.praises.length > 0}}">
+							{{profession.praises.length}}
+						</block>
+						<block wx:else>
+							赞
+						</block>
+					</view>
+					<!-- 分享 -->
+					<view class="share-group" bindtap="shareBtn" data-item="{{profession}}">
+						<image src="../../images/share.png"></image>
+						<block wx:if="{{profession.transmit.length > 0}}">
+							{{profession.transmit.length}}
+						</block>
+					</view>
+
+				</view>
+
+				<view class="comment-box"
+					wx:if="{{profession.praises.length >0 || profession.comments.length > 0 || profession.transmit.length}}">
+					<view class="sanjiao"></view>
+					<view class="comment-detail">
+						<view class="share-list" wx:if="{{profession.transmit.length > 0}}">
+							<van-icon name="share" size="17px"></van-icon>
+							<view class="share-item">{{profession.transmit.length}}条转发</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.transmit.length > 0 &&(profession.praises.length >0 || profession.comments.length > 0)}}">
+						</view>
+						<!-- 显示点赞信息 -->
+						<view class="praise-container" wx:if="{{profession.praises.length > 0}}">
+							<view class='praise-content'>
+								<image class='praise-user praise-item' src='/images/ilove.png'></image>
+								<view class='praise-item' wx:for="{{profession.praises}}" wx:key="key">
+									<view class='praise-item-sub'>
+										<!-- 点赞头像 -->
+										<view>
+											<image class='praise-user-avatar' src='{{item.avatarUrl}}'>
+											</image>
+										</view>
+										<!-- 点赞名称 -->
+										<view class='praise-user-name'>
+											{{item.nickName}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.comments.length > 0 && profession.praises.length > 0}}">
+						</view>
+						<!-- 评论信息 -->
+						<view class="comment-wall" wx:for="{{profession.comments}}" wx:key="key"
+							wx:for-item="comments">
+							<view class="comment-content">
+								<!-- <block wx:if="{{comments.comment.childComment.length == 0}}"> -->
+								<view class="childComment-wall" catchtap="delComment" data-item="{{profession}}"
+									data-isChild="{{false}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{profession}}"
+										data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{profession.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-index="{{index}}" data-isChild="{{true}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-isChild="{{true}}" data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 发布按钮 -->
+		<view class="btn" bindtap="publish">
+			<text>+</text>
+		</view>
+	</van-tab>
+
+	<van-tab title="其他" name="f">
+		<view class="container">
+			<view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex"
+				wx:for-item="profession">
+				<!-- 收藏 -->
+				<van-icon name="star-o" bind:click="shart" data-index="{{pindex}}" class="start-icon nostart-icon"
+					wx:if="{{!profession.isStart}}" />
+				<!-- 已收藏 -->
+				<van-icon name="star" color="yellow" bind:click="yesStart" class="start-icon"
+					data-index="{{pindex}}" wx:if="{{profession.isStart}}" />
+				<view class="user-group" wx:if="{{!profession.private}}">
+					<image src="{{profession.author.avatarUrl}}"></image>
+					<view class="right">
+						<view class="username">{{profession.author.nickName}}</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="user-group" wx:else>
+					<image src="/images/timg.jpg"></image>
+					<view class="right">
+						<view class="username">匿名用户</view>
+						<view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+					</view>
+				</view>
+				<view class="content-group">
+					<view class='for-user' wx:if="{{profession.favoritePerson !=''}}">
+						<view style='color:#007acc;'>表白@{{profession.favoritePerson}}</view>
+					</view>
+					<view class="content">{{profession.content}}</view>
+					<block wx:if="{{profession.images.length>0}}">
+						<view wx:if="{{profession.images.length === 1}}" class="image-group">
+							<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{profession.images}}" data-index="0"
+								data-professionInfor="{{pindex}}" />
+						</view>
+						<view wx:if="{{profession.images.length === 2}}" class="image-group">
+							<van-image bindtap="seeImage" wx:for="{{profession.images}}" wx:key="key"
+								wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}"
+								fit="cover" src="{{image}}" data-index="{{index}}"
+								data-professionInfor="{{pindex}}" />
+						</view>
+					</block>
+				</view>
+				<view class="love-footor">
+					<!-- 评论 -->
+					<view class="comment-group">
+						<van-icon name="chat-o" size="20px" bind:click="comment"
+							data-professionInfor="{{pindex}}" />
+						<block wx:if="{{profession.comments.length > 0}}">
+							{{profession.commentsNum}}
+						</block>
+					</view>
+					<!-- 点赞 -->
+					<view class="praise-group" bindtap="onPraise" data-professionInfor="{{pindex}}">
+						<image wx:if="{{profession.isPraise}}" src="../../images/color-love.png" />
+						<image wx:else src="../../images/topic_praise.png" />
+						<block wx:if="{{profession.praises.length > 0}}">
+							{{profession.praises.length}}
+						</block>
+						<block wx:else>
+							赞
+						</block>
+					</view>
+					<!-- 分享 -->
+					<view class="share-group" bindtap="shareBtn" data-item="{{profession}}">
+						<image src="../../images/share.png"></image>
+						<block wx:if="{{profession.transmit.length > 0}}">
+							{{profession.transmit.length}}
+						</block>
+					</view>
+
+				</view>
+
+				<view class="comment-box"
+					wx:if="{{profession.praises.length >0 || profession.comments.length > 0 || profession.transmit.length}}">
+					<view class="sanjiao"></view>
+					<view class="comment-detail">
+						<view class="share-list" wx:if="{{profession.transmit.length > 0}}">
+							<van-icon name="share" size="17px"></van-icon>
+							<view class="share-item">{{profession.transmit.length}}条转发</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.transmit.length > 0 &&(profession.praises.length >0 || profession.comments.length > 0)}}">
+						</view>
+						<!-- 显示点赞信息 -->
+						<view class="praise-container" wx:if="{{profession.praises.length > 0}}">
+							<view class='praise-content'>
+								<image class='praise-user praise-item' src='/images/ilove.png'></image>
+								<view class='praise-item' wx:for="{{profession.praises}}" wx:key="key">
+									<view class='praise-item-sub'>
+										<!-- 点赞头像 -->
+										<view>
+											<image class='praise-user-avatar' src='{{item.avatarUrl}}'>
+											</image>
+										</view>
+										<!-- 点赞名称 -->
+										<view class='praise-user-name'>
+											{{item.nickName}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<!-- 分割线 -->
+						<view class='line'
+							wx:if="{{profession.comments.length > 0 && profession.praises.length > 0}}">
+						</view>
+						<!-- 评论信息 -->
+						<view class="comment-wall" wx:for="{{profession.comments}}" wx:key="key"
+							wx:for-item="comments">
+							<view class="comment-content">
+								<!-- <block wx:if="{{comments.comment.childComment.length == 0}}"> -->
+								<view class="childComment-wall" catchtap="delComment" data-item="{{profession}}"
+									data-isChild="{{false}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{profession}}"
+										data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{profession.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-index="{{index}}" data-isChild="{{true}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-isChild="{{true}}" data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- 发布按钮 -->
+		<view class="btn" bindtap="publish">
+			<text>+</text>
+		</view>
+	</van-tab>
+	<!-- 底部显示组件 -->
+	<get-more-loading wx:if="{{showGeMoreLoadin}}"></get-more-loading>
+	<not-more-tip wx:else="{{noData}}"></not-more-tip>
+	<van-toast id="van-toast" />
+</van-tabs>
+<van-share-sheet show="{{showShare}}" title="立即分享给好友" options="{{options}}" bind:select="onSelect" bind:close="onClose"
+	bind:click-overlay="onOverlay" />
+<!-- 评论框 -->
+<form bindsubmit="formComment">
+	<view class="comment-input" wx:if="{{onCommentInputShow}}" data-professionInfor="{{pindex}}">
+		<input name="commentContent" wx:if="{{!reCommentInput}}" class="input" placeholder="请输入你想评论的话..."
+			cursor-spacing="20px" focus="{{onCommentInputShow}}"></input>
+		<input name="commentContent" wx:else class="input" placeholder="请输入你想回复{{}}的话..." cursor-spacing="20px"
+			focus="{{onCommentInputShow}}"></input>
+		<button type="primary" size="mini" form-type="submit">发送</button>
+	</view>
+</form>
+<view class="mask" wx:if="{{onCommentInputShow}}" catchtap="closeCommentInput"></view>
+<canvas canvas-id="shareCanvas" class="canvas"></canvas>

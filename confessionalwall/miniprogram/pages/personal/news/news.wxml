@@ -1,0 +1,35 @@
+<wxs src="../../../utils/time.wxs" module="timeQuantum"></wxs>
+<view class="container">
+     <view class="topNews" wx:if="{{!noNew}}">
+          共<text style="color:red">{{messageList.length}}</text>条信息
+          <text class="clearBtn" bindtap="clearNews">点我清空</text>
+     </view>
+     <view class="line"></view>
+     <view class="noNews" wx:if="{{noNew}}">没有任何消息</view>
+     <!-- 外层包裹视图 -->
+     <view class="cont" wx:else>
+          <!-- 列表 -->
+          <view class="list" wx:for="{{messageList}}" wx:key="key"  >
+               <!-- 滑动删除 -->
+               <view bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.txtStyle}}"
+                    class="list_del txt" bindtap="seeNew">
+                    <!-- 图片 -->
+                    <image class="list_img" src="{{item.messager.avatarUrl}}"></image>
+                    <!-- 名称 -->
+                    <text class='list_name'>{{item.messager.nickName}}</text>
+                    <!--时间 -->
+                    <view class='list_datas'>{{item.messageTime}}</view>
+                    <!-- 内容 -->
+                    <view class='list_content' wx:if="{{item.typeWall == 'sale'}}" 
+                    style="white-space:pre-line">
+                    <text style="color:red">#卖友#</text>{{item.msgContent}}</view> 
+                    <view class='list_content' wx:if="{{item.typeWall == 'wall'}}" 
+                    style="white-space:pre-line">
+                    <text style="color:red">#表白墙#</text>{{item.msgContent}}</view>
+               </view>
+               <!-- 删除 -->
+               <view data-index="{{index}}" bindtap="delItem" class="list_del del">删除</view>
+          </view>
+     </view>
+      
+</view>

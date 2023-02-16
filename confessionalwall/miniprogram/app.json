@@ -1,0 +1,60 @@
+{
+     "pages": [
+          "pages/login/login",
+          "pages/express/express",
+          "pages/expressWall/send/send",
+          "pages/personal/my/my",
+          "pages/sale/index/sale",
+          "pages/sale/comment_sale/comment_sale",
+          "pages/sale/post_sale/post_sale",
+          "pages/personal/news/news",
+          "pages/personal/myprofession/myprofession",
+          "pages/personal/seedetails/seedetails",
+          "pages/personal/seeNews/seeNews",
+          "pages/expressWall/authorization/authorization",
+          "components/comment-box/comment-box",
+          "pages/faceAI/faceAI",
+          "pages/personal/mytopic/mytopic",
+          "pages/personal/mycollect/mycollect",
+          "pages/expressWall/postTopic/postTopic",
+          "pages/personal/mycollect/seeCollect/seeCollect",
+          "pages/personal/mylike/mylike"
+     ],
+     "window": {
+          "backgroundColor": "#F6F6F6",
+          "backgroundTextStyle": "dark",
+          "navigationBarBackgroundColor": "#ffc0cb",
+          "navigationBarTitleText": "表白墙",
+          "navigationBarTextStyle": "black",
+          "enablePullDownRefresh": true
+     },
+     "tabBar": {
+          "selectedColor": "#d4237a",
+          "list": [
+               {
+                    "pagePath": "pages/express/express",
+                    "text": "表白墙",
+                    "iconPath": "/images/confession.png",
+                    "selectedIconPath": "/images/confession_1.png"
+               },{
+                    "pagePath": "pages/faceAI/faceAI",
+                    "text": "意中人",
+                    "iconPath": "/images/fall-in-love.png",
+                    "selectedIconPath": "/images/fall-on-love.png"
+               },{
+                    "pagePath": "pages/sale/index/sale",
+                    "text": "卖友",
+                    "iconPath": "/images/sale.png",
+                    "selectedIconPath": "/images/select-sale.png"
+               },
+               {
+                    "pagePath": "pages/personal/my/my",
+                    "text": "我的",
+                    "iconPath": "/images/my.png",
+                    "selectedIconPath": "/images/my_1.png"
+               }
+          ]
+     },
+     "sitemapLocation": "sitemap.json",
+     "cloud": true
+}

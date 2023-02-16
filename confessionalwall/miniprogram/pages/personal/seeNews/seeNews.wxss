@@ -1,0 +1,293 @@
+/* pages/express/express.wxss */
+.container {
+  /* padding: 40rpx; */
+  background: white;
+  margin-top: 15rpx;
+}
+
+.love-group {
+  /* background-color: red; */
+  width: 100%;
+  /* margin-bottom: 30rpx; */
+  background-color: white;
+  padding: 20rpx 10px;
+  box-sizing: border-box;
+}
+
+.love-group .seeProfession {
+  color: rgb(245, 157, 41);
+  font-size: 13px;
+  float: right;
+  /* background: red; */
+  border: 1px solid rgba(255, 102, 0, 0.719);
+}
+
+.love-group .user-group {
+  display: flex;
+}
+
+.user-group image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 1px solid rgb(253, 251, 251);
+}
+
+.user-group .right {
+  flex: 1;
+  margin-left: 20rpx;
+  flex-direction: column;
+  justify-content: space-between;
+  display: flex;
+}
+
+.right .username {
+  font-size: 30rpx;
+  color: #323232;
+}
+
+.right .time {
+  font-size: 26rpx;
+  color: #656565;
+}
+
+.content-group {
+  padding-top: 20rpx;
+}
+
+.delFession {
+  float: right;
+  color: darkgray;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+}
+
+.for-user {
+  color: darkgray;
+  font-size: 35rpx;
+}
+
+.content-group .content {
+  font-size: 40rpx;
+  padding-top: 25rpx;
+}
+
+.love-footor {
+  display: flex;
+  padding-top: 25rpx;
+}
+
+.love-footor .comment-group {
+  /* background-color: red; */
+  width: 50%;
+}
+
+.love-footor .praise-group {
+  /* background-color: yellow; */
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.praise-group image {
+  width: 20px;
+  height: 20px;
+}
+
+.love-footor van-icon {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.image-group {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-group van-image {
+  padding-left: 5rpx;
+}
+
+.share-group {
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.share-group image {
+  width: 20px;
+  height: 20px;
+}
+/* 消息也评论框 */
+.comment-box {
+  background: white;
+  border-top: 1px solid whitesmoke;
+  margin-bottom: 20rpx;
+  width: 100%;
+}
+
+.commentCount {
+  padding-top: 5rpx;
+  padding-left: 7rpx;
+  border-left: 2px solid #ffc0cb;
+  margin-left: -10px;
+}
+/* 点赞列表 */
+.praise-container {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid whitesmoke;
+  margin-top: 20rpx;
+}
+
+.praise-container .praise-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.praise-container .praise-item {
+  display: flex;
+  flex-direction: row;
+  margin-right: 10rpx;
+  margin-top: 5rpx;
+}
+.praise-item .praise-user-avatar {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 5rpx;
+  border-radius: 20rpx;
+}
+.praise-item .praise-item-sub {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.praise-container .praise-user {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+}
+.praise-item-sub{
+  font-size: 25rpx;
+}
+/* 评论列表 */
+.comment-list {
+  margin: 15rpx;
+  /* display: flex; */
+
+}
+
+.comment-list image {
+  width: 35rpx;
+  height: 35rpx;
+  border-radius: 50%;
+}
+
+.comment-list .right {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-left: 10rpx;
+  width: 100%;
+}
+
+/* 评论内容 */
+.comment-list .comContent {
+  margin-top: 1px;
+  font-size: 15px;
+}
+
+.comFooter {
+  display: flex;
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* 评论人 */
+.CommentName {
+  /* margin-top: 10px; */
+  font-size: 25rpx;
+}
+
+/* 评论时间 */
+.comFooter .CommentTime {
+  width: 50%;
+  font-size: 26rpx;
+  color: #656565;
+}
+
+/* 回复 */
+.comFooter .reComment {
+  /* margin-top: 12px; */
+  font-size: 26rpx;
+  color: #656565;
+  width: 25%;
+  display: flex;
+  /* right: 14px; */
+  justify-content: flex-end;
+
+}
+.comFooter .deComment{
+  font-size: 26rpx;
+  color: #656565;
+  width: 15%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reContent {
+  width: 100%;
+}
+
+.recomment-list {
+  display: flex;
+  margin-left: 90rpx;
+}
+
+/* 回复 头像 */
+.recomment-list image {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  border: 1px solid rgb(253, 251, 251);
+}
+
+.reright {
+  width: 100%;
+  margin-left: 10rpx;
+}
+
+.reright .reCommentName {
+  font-size: 13px;
+}
+
+.recomContent {
+  margin-top: 2rpx;
+}
+
+.comItem {
+  display: flex;
+}
+
+/* 被回复人 */
+.byRight {
+  display: flex;
+}
+
+.upCom {
+  display: flex;
+
+}
+
+.comLeft {
+  display: flex;
+}
+
+.rights {
+  margin-left: 80rpx;
+}
+
+/* 话题 */

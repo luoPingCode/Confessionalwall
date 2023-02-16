@@ -1,0 +1,32 @@
+<form bindsubmit="post">
+     <!-- 文本框 -->
+     <view class="cu-form-group margin-top0">
+          <textarea style='height:200rpx;' name="content" maxlength="1024" disabled="{{modalName!=null}}" 
+               placeholder="今天聊点啥呢？快来发布一个吧！你的话题，有可能会成为今天的热点哦~~~"></textarea>
+     </view>
+     <!-- 图片选择 -->
+     <view class="cu-bar margin-top">
+          <view class="action">
+               主题图片
+          </view>
+          <view class="action">
+               {{fileList.length}}/1
+          </view>
+     </view>
+     <van-uploader file-list="{{ fileList }}" bind:delete='DelImg' bind:after-read="afterReadImg" disabled="{{disabled}}"/>
+     <!-- 其他 -->
+     <view class="cu-form-group margin-top">
+          <view class="title">话题标题</view>
+          <input placeholder="给话题起个响亮的标题吧！" name="getName"></input>
+     </view>
+
+     <view class="cu-form-group margin-top">
+          <view class="title">匿名</view>
+          <switch bindchange="setPrivate" name="switch"></switch>
+     </view>
+
+     <view class="padding flex flex-direction">
+          <button class="cu-btn bg-green lg" disabled='{{!canPost}}' form-type="submit">开始发布话题</button>
+     </view>
+
+</form>

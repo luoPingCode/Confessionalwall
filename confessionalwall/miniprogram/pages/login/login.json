@@ -1,0 +1,8 @@
+{
+  "navigationBarTextStyle":"black",
+  "navigationBarBackgroundColor":"#ffc0cb",
+  "navigationBarTitleText": "欢迎来到表白墙~",
+  "usingComponents": {
+    "van-toast": "@vant/weapp/toast/index"
+  }
+}

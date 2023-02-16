@@ -1,0 +1,20 @@
+<view class="mycontainer">
+	<view class="left_my">
+		<button class="btn" wx:if="{{hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo">登录</button>
+		<view class="user" wx:else>
+			<image bindtap="bindViewTap" src="{{avatarUrl}}" mode="contain" data-image="{{avatarUrl}}"></image>
+			<view class="name">{{nickName}}</view>
+		</view>
+	</view>
+</view>
+<view class="mybar">
+	<van-cell title="消息" icon="chat-o" dot is-link link-type="navigateTo" url="/pages/personal/news/news" />
+
+	<van-cell title="我的卖友" icon="/images/select-sale.png" is-link link-type="navigateTo" url="/pages/personal/mytopic/mytopic" />
+
+	<van-cell title="我的表白墙" icon="like-o" is-link link-type="navigateTo" url="/pages/personal/myprofession/myprofession" />
+
+	<van-cell title="我的收藏" icon="star" is-link link-type="navigateTo" url="/pages/personal/mycollect/mycollect" />
+
+	<van-cell title="我的喜欢" icon="like" is-link link-type="navigateTo" url="/pages/personal/mylike/mylike" />
+</view>

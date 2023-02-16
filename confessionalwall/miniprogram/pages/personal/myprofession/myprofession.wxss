@@ -1,0 +1,190 @@
+/* pages/express/express.wxss */
+.container {
+  /* padding: 40rpx; */
+  background: whitesmoke;
+  margin-top: 15rpx;
+}
+
+.love-group {
+  /* background-color: red; */
+  width: 100%;
+  margin-bottom: 30rpx;
+  background-color: white;
+  padding: 40rpx 20px;
+  box-sizing: border-box;
+}
+.love-group .seeProfession{
+  color: rgb(245, 157, 41);
+  font-size: 13px;
+  float: right;
+  /* background: red; */
+  border: 1px solid rgba(255, 102, 0, 0.719);
+}
+.love-group .user-group {
+  display: flex;
+}
+
+.user-group image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 1px solid rgb(253, 251, 251);
+}
+
+.user-group .right {
+  flex: 1;
+  margin-left: 20rpx;
+  flex-direction: column;
+  justify-content: space-between;
+  display: flex;
+}
+
+.right .username {
+  font-size: 30rpx;
+  color: #323232;
+}
+
+.right .time {
+  font-size: 26rpx;
+  color: #656565;
+}
+
+.content-group {
+  padding-top: 20rpx;
+}
+.delFession{
+  float: right;
+  color:  darkgray;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+}
+.for-user {
+  color: darkgray;
+  font-size: 35rpx;
+}
+
+.content-group .content {
+  font-size: 40rpx;
+  padding-top: 25rpx;
+}
+
+.love-footor {
+  display: flex;
+  padding-top: 25rpx;
+}
+
+.love-footor .comment-group {
+  /* background-color: red; */
+  width: 50%;
+}
+
+.love-footor .praise-group {
+  /* background-color: yellow; */
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.praise-group image {
+  width: 25px;
+  height: 25px;
+}
+
+.love-footor van-icon {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.image-group {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-group van-image {
+  padding-left: 5rpx;
+}
+
+.comment-input {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background-color: #f8f8f8;
+  z-index: 99;
+  height: 60px;
+}
+
+.comment-input .input {
+  /* background-color: #d3d3d3; */
+  padding: 20rpx;
+  width: 70%;
+  border-bottom: 1px solid red;
+  margin-left: 10px;
+}
+
+.comment-input button {
+  margin-right: 20rpx;
+
+}
+
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 98;
+}
+
+.comment-box {
+  background: WhiteSmoke;
+  margin-top: 55rpx;
+  margin-bottom: 20rpx;
+}
+.comment-box .sanjiao {
+  position: absolute;
+  border-width: 10px;
+  border-style: solid;
+  width: 0px;
+  height: 0px;
+  border-color: transparent;
+  border-bottom-color: WhiteSmoke;
+  margin-top: -19px;
+  margin-left: 60px;
+}
+
+.comment-box .comment-detail {
+  padding: 15rpx 15rpx;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-detail .comment-wall {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.comment-wall .comment-content{
+  display:flex;
+  flex-direction: column;
+}
+.comment-content .comment-name{
+  color: palevioletred;
+  font-weight: bold;
+  margin-right: 10rpx;
+}
+.noWall{
+  margin-top: 55%;
+  margin-bottom: 45%;
+}
+.childComment-wall{
+  display: flex;
+}

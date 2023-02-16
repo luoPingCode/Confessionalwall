@@ -1,0 +1,14 @@
+<!-- 评论框 -->
+<form bindsubmit="formComment">
+	<view class="comment-input" wx:if="{{inputShow}}" data-professionInfor="{{pindex}}">
+		<input name="commentContent" wx:if="{{!reCommentShow}}" class="input" placeholder="请输入你想评论的话..."
+			cursor-spacing="20px" focus="{{inputShow}}"></input>
+		<input wx:else name="commentContent" class="input" placeholder="请输入你想回复他的话..." cursor-spacing="20px"
+			focus="{{inputShow}}"></input>
+		<button class="button" type="primary" size="mini" form-type="submit">发送</button>
+	</view>
+	 
+</form>
+<van-toast id="van-toast"/>
+<view class="mask" wx:if="{{inputShow}}" catchtap="closeCommentInput"></view>
+ 

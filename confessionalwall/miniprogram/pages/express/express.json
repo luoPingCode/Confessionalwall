@@ -1,0 +1,16 @@
+{
+  "usingComponents": {
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-image": "@vant/weapp/image/index",
+    "not-more-tip": "../../components/not-more-tip/not-more-tip",
+    "get-more-loading":"../../components/get-more-loading/get-more-loading",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-share-sheet": "@vant/weapp/share-sheet/index",
+    "van-dropdown-menu": "@vant/weapp/dropdown-menu/index",
+    "van-dropdown-item": "@vant/weapp/dropdown-item/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index"
+  },
+  "enablePullDownRefresh":true
+}

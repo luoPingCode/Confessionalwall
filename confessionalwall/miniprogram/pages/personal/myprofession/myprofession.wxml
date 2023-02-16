@@ -1,0 +1,90 @@
+<wxs src="../../../utils/time.wxs" module="timeQuantum"></wxs>
+<van-search value="{{ date }}" bind:focus="onDisplay" placeholder="请输入日期 如2021/1/1" use-action-slot bind:search="onSearch">
+  <view slot="action" bind:tap="onClick">搜索</view>
+</van-search>
+<van-popup show="{{show}}" position="bottom" bind:close="onClose" bind:click-overlay="closeOverlay">
+  <van-datetime-picker type="date" value="{{ currentDate }}" min-date="{{ minDate }}" bind:confirm="onConfirm"
+    bind:cancel="onCancel" />
+</van-popup>
+<view class="container">
+  <block wx:if="{{professionInfor.length > 0}}">
+    <view class="love-group" wx:for="{{professionInfor}}" wx:key="key" wx:for-index="pindex" wx:for-item="profession">
+
+      <view class="seeProfession" bindtap="seeDetail" data-professionInfor="{{profession}}">查看详情</view>
+      <view class="user-group" wx:if="{{!profession.private}}">
+        <image src="{{profession.author.avatarUrl}}"></image>
+        <view class="right">
+          <view class="username">{{profession.author.nickName}}</view>
+          <view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+        </view>
+      </view>
+      <view class="user-group" wx:else>
+        <image src="/images/timg.jpg"></image>
+        <view class="right">
+          <view class="username">你匿名了</view>
+          <view class="time">{{timeQuantum.DateFormat(profession.fessionTime)}}</view>
+        </view>
+      </view>
+      <view class="content-group">
+        <view class='for-user' wx:if="{{profession.favoritePerson !=''}}">
+          <view style='color:#007acc;'>表白@{{profession.favoritePerson}}</view>
+        </view>
+        <view class="content">{{profession.content}}</view>
+        <block wx:if="{{profession.images.length>0}}">
+          <view wx:if="{{profession.images.length === 1}}" class="image-group">
+            <van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}" fit="cover"
+              src="{{profession.images}}" data-index="0" data-professionInfor="{{pindex}}" />
+          </view>
+          <view wx:if="{{profession.images.length === 2}}" class="image-group">
+            <van-image bindtap="seeImage" wx:for="{{profession.images}}" wx:key="key" wx:for-item="image"
+              width="{{towImageWidth}}" height="{{towImageWidth}}" fit="cover" src="{{image}}" data-index="{{index}}"
+              data-professionInfor="{{pindex}}" />
+          </view>
+        </block>
+      </view>
+      <view class="delFession" bindtap="delConfessionWall" data-professionInfor="{{profession}}">删除表白墙</view>
+      <view class="comment-box" wx:if="{{profession.comments.length > 0}}">
+        <view class="sanjiao"></view>
+        <view class="comment-detail" wx:for="{{profession.comments}}" wx:key="key" wx:for-item="comments">
+          <view class="comment-wall">
+            <view class="comment-content">
+              <view class="childComment-wall" catchtap="delComment" data-item="{{profession}}"
+									data-isChild="{{false}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="reSay" data-item="{{profession}}"
+										data-index="{{index}}">
+										{{comments.comment.commenters.commenter.nickName}}:
+									</view>
+									<view class="content">{{comments.comment.commentContent}}</view>
+								</view>
+								<!-- </block> -->
+								<!-- 带回复的评论 -->
+								<!-- <block wx:else> -->
+								<view class="childComment-wall" wx:for="{{comments.childComment}}" wx:key='key'
+									data-number="{{profession.commentsNum}}" data-isChild="{{true}}"
+									catchtap="delComment" data-item="{{comments}}" data-index="{{index}}">
+									<view class="comment-name" catchtap="reSay" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-index="{{index}}" data-isChild="{{true}}">
+										{{item.commenters.commenter.nickName}}</view>
+									<span style="color:black">回复</span>
+									<view class="comment-name" catchtap="reSay" data-item="{{comments}}"
+										data-number="{{profession.commentsNum}}" data-id="{{profession._id}}"
+										data-isChild="{{true}}" data-index="{{index}}">
+										{{item.byCommenters.byCommenter.nickName}}:</view>
+									<view class="content">{{item.commentContent}}</view>
+								</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <!-- 没有发布表白墙 -->
+  <block wx:else>
+    <view class="noWall" wx:if="{{professionInfor.length == 0 && onShow}}">
+      {{date}} 没有发布表白墙
+    </view>
+  </block>
+</view>
+<comment-box wx:if="{{onCommentInputShow}}" input-show="{{onCommentInputShow}}" comment-infor="{{commentInfor}}"
+  bindmyevent="onMyEvent"></comment-box>

@@ -1,0 +1,338 @@
+<wxs src="../../../utils/time.wxs" module="timeQuantum"></wxs>
+<view class="container">
+	<block wx:if="{{professionWall.typeWall == 'wall'}}">
+		<view class="love-group" wx:if="{{professionWall}}">
+			<view class="user-group" wx:if="{{!professionWall.private}}">
+				<image src="{{professionWall.author.avatarUrl}}"></image>
+				<view class="right">
+					<view class="username">{{professionWall.author.nickName}}</view>
+					<view class="time">{{timeQuantum.formatDate(professionWall.fessionTime)}}</view>
+				</view>
+			</view>
+			<view class="user-group" wx:else>
+				<image src="/images/timg.jpg"></image>
+				<view class="right">
+					<view class="username">匿名用户</view>
+					<view class="time">{{timeQuantum.DateFormat(professionWall.fessionTime)}}</view>
+				</view>
+			</view>
+			<view class="content-group">
+				<view class='for-user' wx:if="{{professionWall.favoritePerson !=''}}">
+					<view style='color:#007acc;'>表白@{{professionWall.favoritePerson}}</view>
+				</view>
+				<view class="content">{{professionWall.content}}</view>
+				<block wx:if="{{professionWall.images.length>0}}">
+					<view wx:if="{{professionWall.images.length === 1}}" class="image-group">
+						<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+							fit="cover" src="{{professionWall.images}}" data-index="0"
+							data-professionInfor="{{pindex}}" />
+					</view>
+					<view wx:if="{{professionWall.images.length === 2}}" class="image-group">
+						<van-image bindtap="seeImage" wx:for="{{professionWall.images}}" wx:key="key"
+							wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}" fit="cover"
+							src="{{image}}" data-index="{{index}}" data-professionInfor="{{pindex}}" />
+					</view>
+				</block>
+			</view>
+			<view class="love-footor">
+				<!-- 评论 -->
+				<view class="comment-group">
+					<van-icon name="chat-o" size="20px" />
+				</view>
+				<!-- 点赞 -->
+				<view class="praise-group">
+					<image wx:if="{{professionWall.praises.length > 0}}" src="../../../images/color-love.png" />
+					<image wx:else src="../../../images/topic_praise.png" />
+					<block wx:if="{{professionWall.praises && professionWall.praises.length > 0}}">
+						{{professionWall.praises.length}}
+					</block>
+					<block wx:else>
+						赞
+					</block>
+				</view>
+				<!-- 分享 -->
+				<view class="share-group" bindtap="shareBtn" data-item="{{professionWall}}">
+					<image src="../../../images/share.png"></image>
+					<block wx:if="{{professionWall.transmit.length > 0}}">
+						{{professionWall.transmit.length}}
+					</block>
+				</view>
+			</view>
+			<!-- 转发列表 -->
+			<view class="praise-container" wx:if="{{professionWall.transmit.length > 0}}">
+				<view class='praise-content'>
+					<image class='praise-user praise-item' src='../../../images/share.png'></image>
+					<view class='praise-item' wx:for="{{professionWall.transmit}}" wx:key="key">
+						<view class='praise-item-sub'>
+							<!-- 点赞头像 -->
+							<view>
+								<image class='praise-user' src='{{item.avatarUrl}}'>
+								</image>
+							</view>
+							<!-- 点赞名称 -->
+							<view class='praise-user-name'>
+								{{item.nickName}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 点赞数据 -->
+
+			<!-- 显示点赞信息 -->
+			<view class="praise-container" wx:if="{{professionWall.praises.length > 0}}">
+				<view class='praise-content'>
+					<image class='praise-user praise-item' src='../../../images/ilove.png'></image>
+					<view class='praise-item' wx:for="{{professionWall.praises}}" wx:key="key">
+						<view class='praise-item-sub'>
+							<!-- 点赞头像 -->
+							<view>
+								<image class='praise-user' src='{{item.avatarUrl}}'>
+								</image>
+							</view>
+							<!-- 点赞名称 -->
+							<view class='praise-user-name'>
+								{{item.nickName}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 评论列表 -->
+			<view class="comment-box">
+				<view class="commentCount">({{professionWall.commentsNum}})条评论</view>
+				<view class="comment-item" wx:for="{{professionWall.comments}}" wx:for-item="comments" wx:key="key">
+					<view class="comment-list">
+						<!-- <block wx:if="{{comments.comment.byCommenters.byCommenter == ''}}"> -->
+						<view class="comItem">
+							<image src="{{comments.comment.commenters.commenter.avatarUrl}}"></image>
+							<view class="right">
+								<view class="CommentName">
+									{{comments.comment.commenters.commenter.nickName}}</view>
+								<view class="comContent">{{comments.comment.commentContent}}</view>
+								<view class="comFooter">
+									<view class="CommentTime">
+										{{timeQuantum.formatDate(comments.comment.time)}}
+									</view>
+									<view class="reComment" catchtap="relComment" data-ischild="{{false}}"
+										data-comment="{{comments}}" data-item="{{professionWall}}"
+										data-index="{{index}}">回复</view>
+									<view class="deComment" catchtap="delComment"
+										data-item="{{professionWall}}" data-ischild="{{false}}"
+										data-index="{{index}}">删除</view>
+								</view>
+
+							</view>
+						</view>
+						<!-- </block> -->
+						<!-- 回复 -->
+						<!-- <block wx:else> -->
+						<view class="comItem1" wx:for="{{comments.childComment}}" wx:key="key">
+							<view class="upCom">
+								<view class="comLeft">
+									<image class="img" src="{{item.commenters.commenter.avatarUrl}}">
+									</image>
+									<view class="CommentName">
+										{{item.commenters.commenter.nickName}} 回复</view>
+
+								</view>
+								<view class="byRight">
+									<image src="{{item.byCommenters.byCommenter.avatarUrl}}">
+									</image>
+									<view class="CommentName">
+										{{item.byCommenters.byCommenter.nickName}}
+									</view>
+								</view>
+							</view>
+							<view class="rights">
+								<view class="comContent">{{item.commentContent}}</view>
+								<view class="comFooter">
+									<view class="CommentTime">
+										{{timeQuantum.formatDate(item.time)}}
+									</view>
+									<view class="reComment" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{professionWall.commentsNum}}"
+										data-id="{{profession._id}}" data-ischild="{{true}}"
+										data-index="{{index}}">回复</view>
+									<view class="deComment" catchtap="delComment"
+										data-number="{{professionWall.commentsNum}}" data-item="{{comments}}"
+										data-ischild="{{true}}" data-index="{{index}}">
+										删除</view>
+								</view>
+							</view>
+						</view>
+						<!-- </block> -->
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<block wx:else>
+		<!-- 话题墙 -->
+		<view class="love-group" wx:if="{{professionWall}}">
+			<view class="user-group" wx:if="{{!professionWall.private}}">
+				<image src="{{professionWall.topicAutor.avatarUrl}}"></image>
+				<view class="right">
+					<view class="username">{{professionWall.topicAutor.nickName}}</view>
+					<view class="time">{{professionWall.topicTime}}</view>
+				</view>
+			</view>
+			<view class="user-group" wx:else>
+				<image src="/images/timg.jpg"></image>
+				<view class="right">
+					<view class="username">匿名用户</view>
+					<view class="time">{{professionWall.topicTime}}</view>
+				</view>
+			</view>
+			<view class="content-group">
+				<view class='for-user' wx:if="{{professionWall.topicName !=''}}">
+					<view style='color:#007acc;'>#{{professionWall.topicName}}#</view>
+				</view>
+				<view class="content">{{professionWall.topicContent}}</view>
+				<block wx:if="{{professionWall.images.length>0}}">
+					<view wx:if="{{professionWall.images.length === 1}}" class="image-group">
+						<van-image bindtap="seeImage" width="{{towImageWidth}}" height="{{towImageWidth}}"
+							fit="cover" src="{{professionWall.images}}" data-index="0"
+							data-professionInfor="{{pindex}}" />
+					</view>
+					<view wx:if="{{professionWall.images.length === 2}}" class="image-group">
+						<van-image bindtap="seeImage" wx:for="{{professionWall.images}}" wx:key="key"
+							wx:for-item="image" width="{{towImageWidth}}" height="{{towImageWidth}}" fit="cover"
+							src="{{image}}" data-index="{{index}}" data-professionInfor="{{pindex}}" />
+					</view>
+				</block>
+			</view>
+			<view class="love-footor">
+				<!-- 评论 -->
+				<view class="comment-group">
+					<van-icon name="chat-o" size="25px" />
+				</view>
+				<!-- 点赞 -->
+				<view class="praise-group">
+					<image wx:if="{{professionWall.praises.length > 0}}" src="../../../images/color-love.png" />
+					<image wx:else src="../../../images/topic_praise.png" />
+					<block wx:if="{{professionWall.praises && professionWall.praises.length > 0}}">
+						{{professionWall.praiseNum}}
+					</block>
+					<block wx:else>
+						赞
+					</block>
+				</view>
+				<!-- 分享 -->
+				<view class="share-group" bindtap="shareBtn" data-item="{{professionWall}}">
+					<image src="../../../images/share.png"></image>
+					<block wx:if="{{professionWall.transmit.length > 0}}">
+						{{professionWall.transmitNum}}
+					</block>
+				</view>
+			</view>
+			<!-- 转发列表 -->
+			<view class="praise-container" wx:if="{{professionWall.transmit.length > 0}}">
+				<view class='praise-content'>
+					<image class='praise-user praise-item' src='../../../images/share.png'></image>
+					<view class='praise-item' wx:for="{{professionWall.transmit}}" wx:key="key">
+						<view class='praise-item-sub'>
+							<!-- 点赞头像 -->
+							<view>
+								<image class='praise-user' src='{{item.avatarUrl}}'>
+								</image>
+							</view>
+							<!-- 点赞名称 -->
+							<view class='praise-user-name'>
+								{{item.nickName}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 点赞数据 -->
+
+			<!-- 显示点赞信息 -->
+			<view class="praise-container" wx:if="{{professionWall.praises.length > 0}}">
+				<view class='praise-content'>
+					<image class='praise-user praise-item' src='../../../images/ilove.png'></image>
+					<view class='praise-item' wx:for="{{professionWall.praises}}" wx:key="key">
+						<view class='praise-item-sub'>
+							<!-- 点赞头像 -->
+							<view>
+								<image class='praise-user' src='{{item.avatarUrl}}'>
+								</image>
+							</view>
+							<!-- 点赞名称 -->
+							<view class='praise-user-name'>
+								{{item.nickName}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 评论列表 -->
+			<view class="comment-box">
+				<view class="commentCount">({{professionWall.commentsNum}})条评论</view>
+				<view class="comment-item" wx:for="{{professionWall.comments}}" wx:for-item="comments" wx:key="key">
+					<view class="comment-list">
+						<view class="comItem">
+							<image src="{{comments.comment.commenters.commenter.avatarUrl}}"></image>
+							<view class="right">
+								<view class="CommentName">
+									{{comments.comment.commenters.commenter.nickName}}</view>
+								<view class="comContent">{{comments.comment.commentContent}}</view>
+								<view class="comFooter">
+									<view class="CommentTime">
+										{{timeQuantum.formatDate(comments.comment.time)}}
+									</view>
+									<view class="reComment" catchtap="relComment" data-ischild="{{false}}"
+										data-comment="{{comments}}" data-item="{{professionWall}}"
+										data-index="{{index}}">回复</view>
+									<view class="deComment" catchtap="delComment"
+										data-item="{{professionWall}}" data-ischild="{{false}}"
+										data-index="{{index}}">删除</view>
+								</view>
+
+							</view>
+						</view>
+						<!-- 子评论 -->
+						<view class="comItem1" wx:for="{{comments.childComment}}" wx:key="key">
+							<view class="upCom">
+								<view class="comLeft">
+									<image class="img" src="{{item.commenters.commenter.avatarUrl}}">
+									</image>
+									<view class="CommentName">
+										{{item.commenters.commenter.nickName}} 回复</view>
+
+								</view>
+								<view class="byRight">
+									<image src="{{item.byCommenters.byCommenter.avatarUrl}}">
+									</image>
+									<view class="CommentName">
+										{{item.byCommenters.byCommenter.nickName}}
+									</view>
+								</view>
+							</view>
+							<view class="rights">
+								<view class="comContent">{{item.commentContent}}</view>
+								<view class="comFooter">
+									<view class="CommentTime">
+										{{timeQuantum.formatDate(item.time)}}
+									</view>
+									<view class="reComment" catchtap="relComment" data-item="{{comments}}"
+										data-number="{{professionWall.commentsNum}}"
+										data-id="{{profession._id}}" data-ischild="{{true}}"
+										data-index="{{index}}">回复</view>
+									<view class="deComment" catchtap="delComment"
+										data-number="{{professionWall.commentsNum}}" data-item="{{comments}}"
+										data-ischild="{{true}}" data-index="{{index}}">
+										删除</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+</view>
+
+<!-- 评论框 -->
+<comment-box wx:if="{{onCommentInputShow}}" input-show="{{onCommentInputShow}}" comment-infor="{{commentInfor}}"
+	bindmyevent="onMyEvent"></comment-box>

@@ -1,0 +1,185 @@
+<wxs src="../../../../utils/time.wxs" module="timeQuantum"></wxs>
+<view class="contanier">
+     <block wx:if="{{dataDateil}}" wx:key="key">
+          <block wx:if="{{dataDateil.typeWall == 'wall'}}">
+               <view class="head">
+                    <!-- 作者部分 -->
+                    <image class="userImg" src="{{dataDateil.author.avatarUrl}}" />
+                    <view class="user">
+                         <text class="username">{{dataDateil.author.nickName}}</text>
+                         <text class="time">{{timeQuantum.DateFormat(dataDateil.fessionTime)}}</text>
+                    </view>
+               </view>
+               <view class="body">
+                    <!-- 内容部分 -->
+                    <view class="content">
+                         <text class="fession margin">{{dataDateil.favoritePerson}}</text>
+                         <!-- <text class="title margin">标题</text> -->
+                         <view class="fessionContent margin">
+                              <view class="fesncotnt">{{dataDateil.content}}</view>
+                              <block wx:if="{{dataDateil.images.length ===  1}}">
+                                   <image src="dataDateil.images" mode="aspectFit"
+                                        style="width:{{towImageWidth}}px; height:{{towImageWidth}}px"></image>
+                              </block>
+                              <block wx:if="{{dataDateil.images.length ===  2}}"></block>
+                              <image wx:for="{{dataDateil.images}}" wx:key="key" wx:for-item="image" src="image"
+                                   mode="aspectFit" style="width:{{towImageWidth}}px; height:{{towImageWidth}}px">
+                              </image>
+                         </view>
+                    </view>
+               </view>
+               <view class="foot">
+                    <!-- 点赞 --- 评论等部分 -->
+                    <view class="img">
+                         <view class="left" style="width:{{width}}px">
+                              <van-icon bind:click="iocnClick" name="comment-o" size="20px" />
+                              <block wx:if="{{dataDateil.comments.length > 0}}">{{dataDateil.commentsNum}}</block>
+                              <van-icon wx:if="{{!dataDateil.isPraise}}" bind:click="praiseClick" name="like-o"
+                                   size="20px" />
+                              <!-- 点赞 -->
+                              <van-icon wx:if="{{dataDateil.isPraise}}" name="like" color="red" bind:click="praiseClick"
+                                   size="20px" />
+                              <block wx:if="{{dataDateil.praises.length > 0}}">{{dataDateil.praises.length}}</block>
+                              <van-icon name="star-o" wx:if="{{!dataDateil.isStart}}" bind:click="startClick"
+                                   size="20px" />
+                              <van-icon name="star" bind:click="yesStart" wx:if="{{dataDateil.isStart}}" size="20px"
+                                   color="red" />
+                              <block wx:if="{{dataDateil.startNum > 0}}">{{dataDateil.start.length}}</block>
+
+                         </view>
+                         <view class="right" style="width:{{rightWidth}}px">
+                              <!-- <van-icon bind:click="iocnClick" name="share-o" size="20px" />
+                              <block wx:if="{{dataDateil.transmitNum > 0}}">{{dataDateil.transmitNum}}</block> -->
+                         </view>
+
+                    </view>
+               </view>
+          </block>
+          <block wx:if="{{dataDateil.typeWall == 'topic'}}">
+               <view class="head">
+                    <!-- 作者部分 -->
+                    <image class="userImg" src="{{dataDateil.topicAutor.avatarUrl}}" />
+                    <view class="user">
+                         <text class="username">{{dataDateil.topicAutor.nickName}}</text>
+                         <text class="time">{{dataDateil.topicTime}}</text>
+                    </view>
+               </view>
+               <view class="body">
+                    <!-- 内容部分 -->
+                    <view class="content">
+                         <text class="title margin">{{dataDateil.topicName}}</text>
+                         <view class="fessionContent margin">
+                              <view class="fesncotnt">{{dataDateil.topicContent}}</view>
+                              <block wx:if="{{dataDateil.images.length > 0}}">
+                                   <block wx:if="{{dataDateil.images.length ===  1}}">
+                                        <image src="{{dataDateil.images}}" mode="aspectFit"
+                                             style="width:{{towImageWidth}}px; height:{{towImageWidth}}px"></image>
+                                   </block>
+                                   <block wx:if="{{dataDateil.images.length ===  2}}">
+                                        <image wx:for="{{dataDateil.images}}" wx:key="key" wx:for-item="image"
+                                             src="image" mode="aspectFit"
+                                             style="width:{{towImageWidth}}px; height:{{towImageWidth}}px">
+                                        </image>
+                                   </block>
+                              </block>
+                         </view>
+                    </view>
+               </view>
+               <view class="foot">
+                    <!-- 点赞 --- 评论等部分 -->
+                    <view class="img">
+                         <view class="left" style="width:{{width}}px">
+                              <van-icon bind:click="iocnClick" name="comment-o" size="20px" />
+                              <block wx:if="{{dataDateil.comments.length > 0}}">{{dataDateil.commentsNum}}</block>
+                              <van-icon wx:if="{{!dataDateil.isPraise}}" bind:click="praiseClick" name="like-o"
+                                   size="20px" />
+                              <van-icon wx:if="{{dataDateil.isPraise}}" name="like" color="red" bind:click="praiseClick"
+                                   size="20px" />
+                              <block wx:if="{{dataDateil.praises.length > 0}}">{{dataDateil.praises.length}}</block>
+                              <van-icon name="star-o" bind:click="startClick" size="20px"
+                                   wx:if="{{!dataDateil.isStart}}" />
+                              <van-icon name="star" bind:click="yesStart" size="20px" color="red"
+                                   wx:if="{{dataDateil.isStart}}" />
+                              <block wx:if="{{dataDateil.startNum > 0}}">{{dataDateil.startNum}}</block>
+
+                         </view>
+                         <view class="right" style="width:{{rightWidth}}px">
+                              <!-- <van-icon bind:click="iocnClick" name="share-o" size="20px" />
+                              <block wx:if="{{dataDateil.transmitNum > 0}}">{{dataDateil.transmitNum}}</block> -->
+                         </view>
+                    </view>
+               </view>
+          </block>
+     </block>
+</view>
+
+<van-popup show="{{showPopup}}" position="bottom" bind:close="onClose" round safe-area-inset-top closeable>
+     <view class="allComment">全部评论({{dataDateil.commentsNum}})</view>
+     <view class="newContaner" style="height:{{height}}px">
+
+          <scroll-view scroll-y="true" style="93px">
+               <view class="newList" id="a{{index}}" wx:for="{{dataDateil.comments}}" wx:for-index="index"
+                    wx:for-item="comment" wx:key="key">
+                    <view class="father">
+                         <view class="newRight">
+                              <image src="{{comment.comment.commenters.commenter.avatarUrl}}"></image>
+                              <text class="newName">{{comment.comment.commenters.commenter.nickName}}</text>
+                         </view>
+                         <view class="newLeft">
+                              <view class="newContent" bindlongpress="longtap" data-item="{{dataDateil}}"
+                                   data-isChild="{{false}}" data-index="{{index}}">{{comment.comment.commentContent}}
+                              </view>
+                              <view class="newTime">
+                                   <text>{{timeQuantum.DateFormat(comment.comment.time)}}</text>
+                                   <text catchtap="relComment" data-index="{{index}}" data-item="{{dataDateil}}"
+                                        data-ischild="{{false}}">回复</text>
+                              </view>
+                         </view>
+                    </view>
+                    <view class="child" wx:for="{{comment.childComment}}" wx:for-item="child" wx:key='key'>
+                         <view class="newRight childSize">
+                              <image src="{{child.commenters.commenter.avatarUrl}}"></image>
+                              <text class="childName">{{child.commenters.commenter.nickName}}</text>
+                         </view>
+                         <!-- 子评论 -->
+                         <view class="newLeft">
+                              <view class="newContent" bindlongpress="longtap" data-number="{{dataDateil.commentsNum}}"
+                                   data-isChild="{{true}}" data-item="{{comment}}" data-index="{{index}}">
+                                   <text>回复 {{child.byCommenters.byCommenter.nickName}}:</text>
+                                   {{ child.commentContent}}
+                              </view>
+                              <view class="newTime ">
+                                   <text>{{timeQuantum.DateFormat(child.time)}} . </text>
+                                   <text catchtap="relComment" data-item="{{comment}}"
+                                        data-number="{{dataDateil.commentsNum}}" data-id="{{dataDateil._id}}"
+                                        data-isChild="{{true}}" data-index="{{index}}">回复</text>
+                              </view>
+                         </view>
+                    </view>
+               </view>
+               <view class="newList1">
+                    <view class="newRight">
+                         <image></image>
+                         <text class="newName"></text>
+                    </view>
+                    <view class="newLeft">
+                         <view class="newContent"></view>
+                         <view class="newTime">
+                              <text></text>
+                              <text></text>
+                         </view>
+                         <view class="reComment">
+                              <view class="rePerson"></view>
+                         </view>
+                    </view>
+               </view>
+          </scroll-view>
+     </view>
+     <form bindsubmit="formComment">
+          <view class="comment-input" wx:if="{{onCommentInputShow}}">
+               <input name="commentContent" class="input" placeholder="{{placeholder}}" value="{{value}}"
+                    cursor-spacing="20px" focus="{{inputShow}}"></input>
+               <button class="button" type="primary" size="mini" form-type="submit">发送</button>
+          </view>
+     </form>
+</van-popup>

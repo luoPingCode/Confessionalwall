@@ -1,0 +1,201 @@
+.contanier {
+     background: white;
+     /* height: 100%; */
+}
+
+.contanier .head {
+     display: flex;
+     padding: 15rpx;
+}
+
+.head .userImg {
+     border-radius: 50%;
+     width: 40px;
+     height: 40px;
+     border: 1px solid black;
+}
+
+/* 作者 */
+.head .user {
+     padding-left: 10rpx;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+}
+
+/* 作者名字 */
+.user .username {
+     font-style: italic;
+     font-family: cursive;
+}
+
+/* 作者发布时间 */
+.user .time {
+     color: #6b6b6b;
+     font-size: 20rpx;
+}
+
+/* 发布内容容器 */
+.contanier .body {
+     margin-top: 10rpx;
+     padding: 10rpx;
+}
+
+.body .content {
+     display: flex;
+     flex-direction: column;
+     margin-left: 22px;
+}
+
+/* 发布内容的喜欢的人 */
+.content .fession {
+     color: red;
+}
+
+.margin {
+     margin-bottom: 10rpx;
+}
+
+/* 标题 */
+.content .title {
+     font-size: 17px;
+}
+
+.content .fessionContent {
+     color: #6b6b6b;
+     font-size: 26rpx;
+}
+
+.fessionContent .fesncotnt {
+     margin-bottom: 15rpx;
+}
+
+.fessionContent image {
+     /* border: 1rpx solid black; */
+     margin: 3rpx;
+}
+
+.contanier .foot {
+     padding: 5rpx;
+     border-top: 1px solid wheat;
+}
+
+.foot .img {
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     /* margin-left: 22px; */
+     align-items: center;
+     padding: 10rpx;
+}
+
+.img .left {
+     margin-right: 25px;
+     display: flex;
+}
+
+.left van-icon {
+     /* box-sizing: border-box;  border计算在width中 */
+     width: 33.33%;
+     justify-content: flex-end;
+}
+
+.img .right {
+     display: flex;
+     justify-content: flex-end;
+     margin-right: 20rpx;
+}
+.allComment{
+     margin-top: 15px;
+     width: 100%;
+     justify-content: center;
+     display: flex;
+     border-bottom:1rpx solid rgb(219, 218, 218);
+     /* box-shadow:0px 1px 2px rgb(219, 218, 218); */
+}
+.newContaner {
+     /* margin-top: 20px; */
+     background: white;
+}
+
+.newList {
+     display: flex;
+     flex-direction: column;
+     margin: 20rpx;
+     border-bottom: 1rpx solid gray;
+}
+.newList1{
+     display: flex;
+     flex-direction: column;
+     margin: 20rpx;
+}
+.newRight {
+     display: flex;
+     align-items: center;
+}
+
+.newRight image {
+     border-radius: 50%;
+     height: 20px;
+     width: 20px;
+}
+
+.newRight text {
+     color: #383737;
+     padding: 10rpx;
+     font-size: 13px;
+}
+
+.newLeft {
+     padding: 5rpx;
+     margin-left: 22px;
+}
+
+.newLeft .newContent {
+     font-size: 11px;
+     display: flex;
+}
+
+.newLeft .newTime {
+     margin-top: 10rpx;
+     font-size: 8px;
+}
+
+.newTime text {
+     padding-right: 5px;
+}
+
+.newTime text:first-child {
+     color: #737171;
+}
+
+/* 评论框 */
+.comment-input {
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     right: 0;
+     display: flex;
+     justify-items: center;
+     align-items: center;
+     background-color: #f8f8f8;
+     /* z-index: 99; */
+     height: 55px;
+}
+
+.comment-input .input {
+     /* background-color: #d3d3d3; */
+     padding: 15rpx;
+     width: 70%;
+     border-bottom: 1rpx solid red;
+     margin-left: 15px;
+}
+
+.comment-input .button {
+     margin-right: 20rpx;
+
+}
+/* 子评论 */
+.child{
+     margin-left: 22px;
+}

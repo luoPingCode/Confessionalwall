@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-image": "@vant/weapp/image/index",
+    "comment-box":"../../../components/comment-box/comment-box",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-popup": "@vant/weapp/popup/index"
+  },
+  "navigationBarTitleText": "我的表白墙"
+  
+}

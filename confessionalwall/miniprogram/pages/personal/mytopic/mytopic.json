@@ -1,0 +1,15 @@
+{
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-share-sheet": "@vant/weapp/share-sheet/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "comment-box": "../../../components/comment-box/comment-box",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "not-more-tip": "../../../components/not-more-tip/not-more-tip",
+    "get-more-loading": "../../../components/get-more-loading/get-more-loading"
+  },
+  "navigationBarTitleText": "我的卖友"
+}

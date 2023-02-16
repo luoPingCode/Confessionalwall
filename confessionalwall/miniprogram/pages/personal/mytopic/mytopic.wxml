@@ -1,0 +1,81 @@
+<van-search value="{{ date }}" placeholder="请输入日期 如2021/1/1" use-action-slot bind:search="onSearch"
+     bind:tap="onDisplay">
+     <view slot="action" catchtap="onClick">搜索</view>
+</van-search>
+<van-popup show="{{ showPop }}" position="bottom" bind:close="onClose">
+     <van-datetime-picker type="date" value="{{ currentDate }}" min-date="{{ minDate }}" bind:confirm="onConfirm"
+          bind:cancel="onCancel" />
+</van-popup>
+<!-- <block wx:if="{{leftList.length > 0}}"> -->
+     <view class='container'>
+          <view class='content'>
+               <view class='content-left'>
+                    <view class='item' wx:for="{{leftList}}" catchtap='seeDetail' data-objid='{{item.id}}' wx:key="key">
+                         <image class='main-pic' mode='widthFix' src='{{item.attachments[0].url}}'></image>
+                         <view class='footer'>
+                              <view class='footer-item'>
+                                   <view class='user-info'>
+                                        <image class='icon avatar' src='{{item.poster.avatar}}'></image>
+                                        <view>{{item.poster.nickname}}</view>
+                                   </view>
+                                   <view class='share-icon'>
+                                        {{item.praise_number}} 喜欢
+                                   </view>
+                                   <view class='share-icon'>
+                                        {{item.comment_number}} 评论
+                                   </view>
+                              </view>
+                         </view>
+                    </view>
+
+               </view>
+
+               <view class='content-right'>
+
+                    <view class='item' wx:for="{{rightList}}" wx:key="key">
+                         <image class='main-pic' mode='widthFix' catchtap='seeDetail' data-objid='{{item.id}}'
+                              src='{{item.attachments[0].url}}'></image>
+                         <view class='footer'>
+                              <view class='footer-item'>
+                                   <view class='user-info'>
+                                        <image class='icon avatar' style='width: 40rpx;' src='{{item.poster.avatar}}'>
+                                        </image>
+                                        <view>{{item.poster.nickname}}</view>
+                                   </view>
+                                   <view class='share-icon'>
+                                        {{item.praise_number}} 喜欢
+                                   </view>
+                                   <view class='share-icon'>
+                                        {{item.comment_number}} 评论
+                                   </view>
+                              </view>
+                         </view>
+                    </view>
+
+               </view>
+          </view>
+     </view>
+<!-- </block> -->
+<!-- 没有发布表白墙 -->
+<!-- <block wx:else> -->
+     <view class="noWall" wx:if="{{leftList.length == 0 && onShow}}">
+          {{date}} 没有发布话题
+     </view>
+<!-- </block> -->
+<!-- 底部显示组件 -->
+<!-- <get-more-loading wx:if="{{showGeMoreLoadin}}"></get-more-loading>
+<not-more-tip wx:if="{{topicProInfor.length != 0 &&    noData}}"></not-more-tip> -->
+<!-- 发布按钮 -->
+<!-- <view class="btn" bindtap="publish">
+     <image class="postTopic" src="/images/new-post.png"></image>
+</view> -->
+<van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:close="onCloseSheet"
+     bind:cancel="onCancelSheet" bind:select="selectSheet" />
+<!-- 分享组件 -->
+<van-share-sheet show="{{showShare}}" title="立即分享给好友" options="{{options}}" bind:select="onSelect"
+     bind:close="onCloseShare" bind:click-overlay="onOverlay" />
+<!-- 评论组件 -->
+<comment-box wx:if="{{onCommentInputShow}}" input-show="{{onCommentInputShow}}" reComment-show="{{reCommentInput}}"
+     comment-infor="{{commentInfor}}" bindmyevent="onMyEvent"></comment-box>
+<view class="mask" wx:if="{{onCommentInputShow}}" catchtap="closeCommentInput"></view>
+<canvas canvas-id="shareCanvas" class="canvas"></canvas>

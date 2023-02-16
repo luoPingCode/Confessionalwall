@@ -1,0 +1,35 @@
+.comment-input {
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     right: 0;
+     display: flex;
+     justify-items: center;
+     align-items: center;
+     background-color: #f8f8f8;
+     z-index: 99;
+     height: 60px;
+   }
+   
+   .comment-input .input {
+     /* background-color: #d3d3d3; */
+     padding: 20rpx;
+     width: 70%;
+     border-bottom: 1px solid red;
+     margin-left: 10px;
+   }
+   
+   .comment-input .button {
+     margin-right: 20rpx;
+   
+   }
+   
+   .mask {
+     position: fixed;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     top: 0;
+     background: rgba(0, 0, 0, 0.3);
+     z-index: 98;
+   }

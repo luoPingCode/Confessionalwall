@@ -1,0 +1,41 @@
+<form bindsubmit="formSubmit">
+  <van-cell-group>
+    <van-field name="people" clearable label="{{selectPeople}}" placeholder="请输入你想{{placeholder}}的人" />
+    <van-field name="content" type="textarea" placeholder="请输入{{placeholders}}" autosize custom-style="height:200px" />
+  </van-cell-group>
+  <view class="upload">
+    <view wx:for="{{tempImages}}" wx:key="key" class="image-group"
+      style="width:{{imageSize}}px; height:{{imageSize}}px">
+      <image src="{{item}}" bindtap="preview" data-index="{{index}}"></image>
+      <van-icon name="close" data-index="{{index}}"
+        custom-style="position: absolute;top:-10rpx;right:-10rpx;background-position:center" bind:click="closeBtn"
+        color="black" size="20px" />
+    </view>
+    <view wx:if="{{tempImages.length < 2}}" class="add-image" style="width:{{imageSize}}px; height:{{imageSize}}px"
+      bindtap="addImage">
+      <view>+</view>
+    </view>
+  </view>
+ 
+  <view class="niming-group">
+    <view>表白类型</view>
+    <label bindtap="typeSel">{{type}}</label>
+  </view>
+
+  <view class="niming-group">
+    <view>是否匿名</view>
+    <switch  bindchange="setPrivate" />
+  </view>
+
+
+  <van-button type="primary" custom-style="margin-top:20px;width:{{btnWidth}}px " form-type="submit" block>发布到表白墙
+  </van-button>
+  <van-action-sheet
+  show="{{ show }}"
+  actions="{{ actions }}"
+  bind:close="onClose"
+  bind:select="onSelect"
+  cancel-text="取消"  bind:cancel="cancel"
+/>
+</form>
+ 

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "van-image":"@vant/weapp/image/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "comment-box":"../../../components/comment-box/comment-box"
+  },
+  "navigationBarTitleText": "消息详情"
+}

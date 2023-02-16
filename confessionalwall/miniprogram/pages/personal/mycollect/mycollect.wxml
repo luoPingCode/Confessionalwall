@@ -1,0 +1,67 @@
+<view class="conteniar">
+  <view class="topCon" wx:if="{{isTop}}">
+    <view class="all"><text bindtap="allCheck">全部</text></view>
+    <view class="all can"><text class="cancel" bindtap="cancel">取消</text></view>
+  </view>
+  <view class="startContent" style="{{staly}}">
+    <view class="noNews" wx:if="{{noNew}}">没有任何收藏</view>
+    <!-- 外层包裹视图 -->
+    <view class="cont">
+      <!-- 列表 -->
+      <van-checkbox-group value="{{ result }}" bind:change="onCheckGroup">
+        <block wx:for="{{myCollect}}" wx:key="index">
+          <view class="list" data-index="{{index}}" bindlongpress="longPress">
+            <van-checkbox class="checked check " name="{{ index}}" />
+            <view bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="{{touchEOrCheck}}" data-index="{{index}}"
+              style="{{item.txtStyle}}" class="list_del txt" catchtap="{{seeNew}}">
+              <block wx:if="{{item.startItem.typeWall == 'wall'}}">
+                <!-- 名称 -->
+                <text class='list_name'>{{item.startItem.favoritePerson}}</text>
+                <!-- 内容 -->
+                <view class='list_content' style="white-space:pre-line">{{item.startItem.content}}</view>
+                <!--时间 -->
+                <view class='list_datas'>{{item.startTime}}</view>
+                <!-- 图片 -->
+                <view class="img">
+                  <image class="list_img" src="{{item.startItem.images[0]}}"></image>
+                </view>
+              </block>
+              <block wx:else>
+                <!-- 名称 -->
+                <text class='list_name'>{{item.startItem.topicName}}</text>
+                <!-- 内容 -->
+                <view class='list_content' style="white-space:pre-line">{{item.startItem.topicContent}}</view>
+                <!--时间 -->
+                <view class='list_datas'>{{item.startTime}}</view>
+                <!-- 图片 -->
+                <view class="img">
+                  <image class="list_img" src="{{item.startItem.images[0]}}"></image>
+                </view>
+              </block>
+            </view>
+            <!-- 滑动删除 -->
+            <!-- 删除 -->
+            <view data-index="{{index}}" bindtap="delItem" class="list_del del">删除</view>
+          </view>
+        </block>
+      </van-checkbox-group>
+    </view>
+  </view>
+  <view class="delCheck" catchtap="{{delCheck}}" wx:if="{{isTop}}">
+    <view class="icondel" style="{{color}}">
+      <van-icon name="delete" />
+      <text>删除<block wx:if="{{showNum}}">({{delNumber}})</block></text>
+    </view>
+  </view>
+</view>
+<van-tabbar wx:if="{{showTab}}" active="{{ active }}" bind:change="onChange">
+  <van-tabbar-item>
+    <image slot="icon-active" src="{{ icon.gaobai }}" mode="aspectFit" style="width: 30px; height: 30px;" />
+    <image slot="icon" src="{{ icon.normal }}" mode="aspectFit" style="width: 30px; height: 30px;" />
+    表白墙
+  </van-tabbar-item>
+  <!-- <van-tabbar-item>
+    <image slot="icon-active" src="{{ icon.huati }}" mode="aspectFit" style="width: 30px; height: 30px;" />
+    <image slot="icon" src="{{ icon.active }}" mode="aspectFit" style="width: 30px; height: 30px;" />话题
+  </van-tabbar-item> -->
+</van-tabbar>
